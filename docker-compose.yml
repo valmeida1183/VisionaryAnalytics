@@ -1,6 +1,54 @@
 services:
-  01_webapi:
+  webapi:
     image: ${DOCKER_REGISTRY-}01webapi
     build:
       context: .
       dockerfile: 01_WebApi/Dockerfile
+    volumes:
+      - video-storage:/app/videos # Mounts the named volume to a directory inside the container
+    depends_on:
+      - rabbitmq
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASSWORD}
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_EXPRESS_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_EXPRESS_PASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    depends_on:
+      - mongodb
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-microservices
+    ports:    
+      - "5672:5672"   
+      - "15672:15672"
+    volumes:   
+      - rabbitmq-data:/var/lib/rabbitmq/   
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    restart: unless-stopped
+
+volumes:
+  video-storage:
+  mongodb_data:
+  rabbitmq-data:
