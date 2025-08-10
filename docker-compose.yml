@@ -1,0 +1,6 @@
+services:
+  01_webapi:
+    image: ${DOCKER_REGISTRY-}01webapi
+    build:
+      context: .
+      dockerfile: 01_WebApi/Dockerfile
