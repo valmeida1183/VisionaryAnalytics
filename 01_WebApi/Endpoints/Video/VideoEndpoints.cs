@@ -77,5 +77,6 @@ public static class VideoEndpoints
     }
 
     // Parei em Verificar result pattern, iniciar camada de Application e criar validações que estão aqui lá com FluentValidation.
-    // Iniciar configuração da infraestrutura como banco de dados mongoDb, rabbitMq
+    // Depois iniciar a camada de Infra persistindo o dado no MongoDB utilizando EF Core e MongoDB.Driver.
+    // Revisar a modelagem das entidades
 }

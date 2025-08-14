@@ -11,5 +11,6 @@ public class VideoProcessResult : Entity
     public DateTime ProcessedOn { get; set; }
     public ProcessStatus Status { get; set; }
     public string? ErrorMessage { get; set; }
-    public IEnumerable<VideoQRCode> QRCodes { get; set; } = [];
+
+    public virtual IEnumerable<VideoQRCode> QRCodes { get; set; } = [];
 }
