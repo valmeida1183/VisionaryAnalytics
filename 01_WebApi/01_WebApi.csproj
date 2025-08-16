@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\03_Application\03_Application.csproj" />
     <ProjectReference Include="..\06_SharedKernel\06_SharedKernel.csproj" />
   </ItemGroup>

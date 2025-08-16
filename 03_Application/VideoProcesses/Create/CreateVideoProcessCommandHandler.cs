@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Application.Extensions;
 using FluentValidation;
 using SharedKernel;
 
@@ -13,12 +14,7 @@ internal sealed class CreateVideoProcessCommandHandler(
 
         if (!validationResult.IsValid)
         {
-            var errors = validationResult.Errors
-                .Select(vf => Error.Failure(vf.ErrorCode, vf.ErrorMessage)).ToArray();
-
-            var validationError = new ValidationError(errors);
-            
-            return Result.Failure<Guid>(validationError);
+            return Result.Failure<Guid>(validationResult.ResultErrors());
         }
 
         return Result.Success(Guid.NewGuid());

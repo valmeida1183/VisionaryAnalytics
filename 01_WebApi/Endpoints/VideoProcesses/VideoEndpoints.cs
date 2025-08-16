@@ -25,8 +25,6 @@ public static class VideoEndpoints
         .WithTags(EndpointTags.Video);
     }
 
-    // Parei em finalizar result pattern e tratar multplos erros,
-    // Iniciar camada de Application e criar validações que estão aqui lá com FluentValidation.
-    // Depois iniciar a camada de Infra persistindo o dado no MongoDB utilizando EF Core e MongoDB.Driver.
+    // Parei em iniciar a camada de Infra persistindo o dado no MongoDB utilizando EF Core e MongoDB.Driver.
     // Revisar a modelagem das entidades
 }
