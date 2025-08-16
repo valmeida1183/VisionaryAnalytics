@@ -1,0 +1,32 @@
+﻿using Application.VideoProcesses.Create;
+using MediatR;
+using SharedKernel;
+using WebApi.Extensions;
+
+namespace WebApi.Endpoints.Video;
+
+public static class VideoEndpoints 
+{
+    public static void AddVideoEndpoints(this IEndpointRouteBuilder app)
+    {
+        app.MapPost("videos", async (IFormFile file, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var command = new CreateVideoProcessCommand(file);
+
+            Result<Guid> result = await sender.Send(command, cancellationToken);
+
+            return result.Match(Results.Ok, Results.BadRequest);
+        })
+        .Accepts<IFormFile>("multipart/form-data")
+        .DisableAntiforgery()
+        .Produces(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .WithName("UploadVideo")
+        .WithTags(EndpointTags.Video);
+    }
+
+    // Parei em finalizar result pattern e tratar multplos erros,
+    // Iniciar camada de Application e criar validações que estão aqui lá com FluentValidation.
+    // Depois iniciar a camada de Infra persistindo o dado no MongoDB utilizando EF Core e MongoDB.Driver.
+    // Revisar a modelagem das entidades
+}

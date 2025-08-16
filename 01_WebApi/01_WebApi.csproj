@@ -17,7 +17,11 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Endpoints\Process\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\03_Application\03_Application.csproj" />
+    <ProjectReference Include="..\06_SharedKernel\06_SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>
