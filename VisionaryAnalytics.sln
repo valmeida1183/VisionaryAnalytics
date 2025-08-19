@@ -21,6 +21,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "06_SharedKernel", "06_SharedKernel\06_SharedKernel.csproj", "{B20C47AC-04D1-4286-A47F-7A1894A02ACD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07_CrossCutting", "07_CrossCutting\07_CrossCutting.csproj", "{8A86AF3E-0FC8-4742-B97F-50053A5E7FD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{B20C47AC-04D1-4286-A47F-7A1894A02ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B20C47AC-04D1-4286-A47F-7A1894A02ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B20C47AC-04D1-4286-A47F-7A1894A02ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A86AF3E-0FC8-4742-B97F-50053A5E7FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A86AF3E-0FC8-4742-B97F-50053A5E7FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A86AF3E-0FC8-4742-B97F-50053A5E7FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A86AF3E-0FC8-4742-B97F-50053A5E7FD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{46225716-4211-459F-A28C-D3E0C82D3627} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{0AAF7F73-AA17-4D98-BA00-B31E0BE7C003} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B20C47AC-04D1-4286-A47F-7A1894A02ACD} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{8A86AF3E-0FC8-4742-B97F-50053A5E7FD4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5751BE1B-F0FC-45AD-A26D-2D1F26B763C2}

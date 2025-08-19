@@ -2,7 +2,8 @@
 public enum ProcessStatus
 {
     Failure = 0,
-    InQueue = 1,
-    InProcess = 2,
-    Finished = 3,
+    Pending = 1,
+    InQueue = 2,
+    InProcess = 3,
+    Finished = 4,
 }

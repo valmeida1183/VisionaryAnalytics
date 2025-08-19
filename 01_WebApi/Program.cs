@@ -1,5 +1,5 @@
 using WebApi.Extensions;
-using Application.DI;
+using CrossCutting.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddApplication();
+builder.Configuration.GetValue<string>("MongoDbName");
+
+builder.Services
+    .AddApplication()
+    .AddInfraestructure(builder.Configuration);
 
 var app = builder.Build();
 

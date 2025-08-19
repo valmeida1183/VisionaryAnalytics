@@ -1,18 +1,18 @@
 services:
-  webapi:
-    image: ${DOCKER_REGISTRY-}01webapi
-    build:
-      context: .
-      dockerfile: 01_WebApi/Dockerfile
-    volumes:
-      - video-storage:/app/videos # Mounts the named volume to a directory inside the container
-    depends_on:
-      - rabbitmq
-      - mongodb
+  # webapi:
+  #   image: ${DOCKER_REGISTRY-}01webapi
+  #   build:
+  #     context: .
+  #     dockerfile: 01_WebApi/Dockerfile
+  #   volumes:
+  #     - video-storage:/app/videos # Mounts the named volume to a directory inside the container
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
 
   mongodb:
     image: mongo:latest
-    container_name: mongodb
+    container_name: visionary-analytics-mongodb
     restart: always
     ports:
       - "27017:27017"
@@ -24,7 +24,7 @@ services:
 
   mongo-express:
     image: mongo-express:latest
-    container_name: mongo-express
+    container_name: visionary-analytics-mongo-express
     restart: always
     ports:
       - "8081:8081"
@@ -37,8 +37,8 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: rabbitmq-microservices
-    ports:    
+    container_name: visionary-analytics-rabbitmq
+    ports:
       - "5672:5672"   
       - "15672:15672"
     volumes:   

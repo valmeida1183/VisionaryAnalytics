@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\03_Application\03_Application.csproj" />
-    <ProjectReference Include="..\06_SharedKernel\06_SharedKernel.csproj" />
+    <ProjectReference Include="..\07_CrossCutting\07_CrossCutting.csproj" />
   </ItemGroup>
 
 </Project>
