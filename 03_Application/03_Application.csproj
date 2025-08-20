@@ -8,17 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\Data\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\06_SharedKernel\06_SharedKernel.csproj" />
+    <ProjectReference Include="..\04_Domain\04_Domain.csproj" />
   </ItemGroup>
 
 </Project>

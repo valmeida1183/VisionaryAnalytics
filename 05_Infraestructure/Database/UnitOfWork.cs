@@ -1,4 +1,4 @@
-﻿using Domain.Abstractions.Repositories;
+﻿using Application.Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Abstractions;
 

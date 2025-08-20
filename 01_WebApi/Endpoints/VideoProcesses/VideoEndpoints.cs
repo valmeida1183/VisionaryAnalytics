@@ -1,4 +1,5 @@
 ﻿using Application.VideoProcesses.Create;
+using Domain.Entities;
 using MediatR;
 using SharedKernel;
 using WebApi.Extensions;
@@ -13,7 +14,7 @@ public static class VideoEndpoints
         {
             var command = new CreateVideoProcessCommand(file);
 
-            Result<Guid> result = await sender.Send(command, cancellationToken);
+            Result<VideoProcessResult> result = await sender.Send(command, cancellationToken);
 
             return result.Match(Results.Ok, Results.BadRequest);
         })

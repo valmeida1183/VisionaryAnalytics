@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using SharedKernel.Enums;
 
 namespace Application.VideoProcesses.Create;
-public sealed record CreateVideoProcessCommand(IFormFile File) : ICommand<Guid>
+public sealed record CreateVideoProcessCommand(IFormFile File) : ICommand<VideoProcessResult>
 {
     public static implicit operator VideoProcessResult(CreateVideoProcessCommand command)
     {

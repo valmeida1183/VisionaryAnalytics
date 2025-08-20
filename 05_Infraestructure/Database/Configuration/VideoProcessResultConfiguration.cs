@@ -19,7 +19,6 @@ internal sealed class VideoProcessResultConfiguration : IEntityTypeConfiguration
         builder.Property(vpr => vpr.Status).HasElementName("status");
         builder.Property(vpr => vpr.CreatedOn).HasElementName("createdOn");
 
-
         builder.ToCollection("video_process_results");
     }
 }

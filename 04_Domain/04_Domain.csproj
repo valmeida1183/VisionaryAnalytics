@@ -11,4 +11,8 @@
     <ProjectReference Include="..\06_SharedKernel\06_SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+  </ItemGroup>
+
 </Project>

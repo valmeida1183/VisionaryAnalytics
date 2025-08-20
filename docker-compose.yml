@@ -1,14 +1,14 @@
 services:
-  # webapi:
-  #   image: ${DOCKER_REGISTRY-}01webapi
-  #   build:
-  #     context: .
-  #     dockerfile: 01_WebApi/Dockerfile
-  #   volumes:
-  #     - video-storage:/app/videos # Mounts the named volume to a directory inside the container
-  #   depends_on:
-  #     - rabbitmq
-  #     - mongodb
+  webapi:
+    image: ${DOCKER_REGISTRY-}01webapi
+    build:
+      context: .
+      dockerfile: 01_WebApi/Dockerfile
+    volumes:
+      - video-storage:/app/videos # Mounts the named volume to a directory inside the container
+    depends_on:
+      - rabbitmq
+      - mongodb
 
   mongodb:
     image: mongo:latest
@@ -27,10 +27,12 @@ services:
     container_name: visionary-analytics-mongo-express
     restart: always
     ports:
-      - "8081:8081"
+      - "8082:8081"
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_EXPRESS_USERNAME}
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_EXPRESS_PASSWORD}
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_DB_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_DB_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
       - ME_CONFIG_MONGODB_SERVER=mongodb
     depends_on:
       - mongodb
