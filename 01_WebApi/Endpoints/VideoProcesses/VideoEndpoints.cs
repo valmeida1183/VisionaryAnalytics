@@ -1,7 +1,7 @@
 ﻿using Application.VideoProcesses.Create;
 using Domain.Entities;
 using MediatR;
-using SharedKernel;
+using SharedKernel.Primitives;
 using WebApi.Extensions;
 
 namespace WebApi.Endpoints.Video;

@@ -1,5 +1,5 @@
 ﻿using FluentValidation.Results;
-using SharedKernel;
+using SharedKernel.Primitives;
 
 namespace Application.Extensions;
 internal static class ValidationResultExtension

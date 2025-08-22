@@ -1,4 +1,4 @@
-﻿using SharedKernel;
+﻿using SharedKernel.Primitives;
 
 namespace WebApi.Extensions;
 

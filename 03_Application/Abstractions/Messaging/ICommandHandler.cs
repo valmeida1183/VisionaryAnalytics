@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SharedKernel;
+using SharedKernel.Primitives;
 
 namespace Application.Abstractions.Messaging;
 public interface ICommandHandler<in TCommand> 
