@@ -12,6 +12,8 @@ using System.Reflection;
 using MassTransit;
 using Application.Abstractions.MessageBus;
 using Infraestructure.MessageBus;
+using Application.Abstractions.VideoAnalyser;
+using Infraestructure.VideoAnalyser;
 
 namespace CrossCutting.DI;
 public static class DependencyInjection
@@ -28,8 +30,14 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddInfraestructureConfiguration(this IServiceCollection services)
+    public static IServiceCollection AddInfraestructureConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
+        var storagePath = configuration.GetValue<string>("StoragePath") ?? "/app/videos";
+        var ffmpegPath = configuration.GetValue<string>("FFMpegPath") ?? "/usr/bin/ffmpeg";
+
+        services.AddSingleton<IVideoStorageService>(new VideoStorageService(storagePath));
+        services.AddScoped<IVideoFrameAnalyserService>(provider => new VideoFrameAnalyserService(ffmpegPath));
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IVideoProcessRepository, VideoProcessRepository>();
         services.AddScoped<IVideoQrCodeRepository, VideoQrCodeRepository>();
@@ -110,14 +118,6 @@ public static class DependencyInjection
             });
         });    
 
-        return services;
-    }
-
-    public static IServiceCollection AddStorageConfiguration(this IServiceCollection services, IConfiguration configuration)
-    {
-        var storagePath = configuration.GetValue<string>("StoragePath") ?? "/app/videos";
-        services.AddSingleton<IVideoStorageService>(new VideoStorageService(storagePath));
-        
         return services;
     }
 }

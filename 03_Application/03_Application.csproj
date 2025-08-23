@@ -17,8 +17,4 @@
     <ProjectReference Include="..\04_Domain\04_Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Abstractions\VideoFrameAnalyser\" />
-  </ItemGroup>
-
 </Project>

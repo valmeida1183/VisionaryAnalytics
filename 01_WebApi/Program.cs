@@ -14,9 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddApplicationConfiguration()
-    .AddInfraestructureConfiguration()
+    .AddInfraestructureConfiguration(builder.Configuration)
     .AddDataBaseConfiguration(builder.Configuration)
-    .AddStorageConfiguration(builder.Configuration)
     .AddMassTransitProducerConfiguration(builder.Configuration);
 
 var app = builder.Build();

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FFMpegCore" Version="5.2.0" />
     <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.19" />
@@ -16,11 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\03_Application\03_Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ThirdParty\" />
-    <Folder Include="ThirdParty\VideoFrameAnalyser\" />
   </ItemGroup>
 
 </Project>

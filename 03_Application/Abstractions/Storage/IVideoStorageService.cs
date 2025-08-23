@@ -7,4 +7,6 @@ public interface IVideoStorageService
                               Guid fileId, 
                               string fileName, 
                               CancellationToken cancellationToken);
+    string GetVideoFilePath(Guid fileId, string fileName);
+    string GetVideoFolderPath(Guid fileId);
 }
