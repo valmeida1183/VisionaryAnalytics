@@ -1,5 +1,4 @@
 ﻿using SharedKernel.Abstractions;
-using System.Text.Json;
 
 namespace Domain.Entities;
 public class VideoQRCode : Entity

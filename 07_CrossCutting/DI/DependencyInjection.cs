@@ -84,18 +84,19 @@ public static class DependencyInjection
     public static IServiceCollection AddMassTransitConsumerConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         var host = configuration.GetSection("RabbitMq:Host").Value;
-        var queue = configuration.GetSection("RabbitMq:Queue").Value;
         var user = configuration.GetSection("RabbitMq:User").Value ?? "guest";
         var password = configuration.GetSection("RabbitMq:Password").Value ?? "guest";
 
         if (string.IsNullOrEmpty(host) ||
-            string.IsNullOrEmpty(queue) ||
             string.IsNullOrEmpty(user) ||
             string.IsNullOrEmpty(password))
             throw new Exception("Missing environment variables to configure MassTransit");
 
         services.AddMassTransit(x =>
         {
+            var assembly = Assembly.Load("02_QueueConsumer");
+            x.AddConsumers(assembly);
+
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(host, "/", h =>
@@ -103,10 +104,11 @@ public static class DependencyInjection
                     h.Username(user);
                     h.Password(password);
                 });
-            });
-        });
 
-        services.AddScoped<IMessageEventBusService, MessageEventBusService>();
+                cfg.ConfigureEndpoints(context);
+
+            });
+        });    
 
         return services;
     }

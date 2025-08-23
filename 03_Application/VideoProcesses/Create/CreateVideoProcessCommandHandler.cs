@@ -45,8 +45,8 @@ internal sealed class CreateVideoProcessCommandHandler : ICommandHandler<CreateV
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         // Domain Events?
-        await _videoStorageService.CreateVideoFileAsync(command.File, videoProcess.FileName, cancellationToken);
-        await _messageEventBusService.PublishAsync(videoProcess, cancellationToken);
+        await _videoStorageService.CreateVideoFileAsync(command.File, videoProcess.Id, videoProcess.FileName, cancellationToken);
+        await _messageEventBusService.PublishAsync(new VideoProcessCreatedIntegrationEvent(videoProcess.Id), cancellationToken);
 
         return Result.Success(videoProcess);
     }

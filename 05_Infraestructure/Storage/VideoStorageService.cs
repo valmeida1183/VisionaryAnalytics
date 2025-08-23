@@ -5,6 +5,7 @@ namespace Infraestructure.Storage;
 public class VideoStorageService : IVideoStorageService
 {
     private readonly string _storagePath;
+    public string StoragePath => _storagePath;
 
     public VideoStorageService(string storagePath)
     {
@@ -16,12 +17,19 @@ public class VideoStorageService : IVideoStorageService
         }
     }
 
-    public async Task CreateVideoFileAsync(IFormFile file, string fileName, CancellationToken cancellationToken)
+    public async Task CreateVideoFileAsync(IFormFile file, Guid fileId, string fileName, CancellationToken cancellationToken)
     {
-       var filePath = Path.Combine(_storagePath, fileName);
+        var fileFolder = $"{_storagePath}/{fileId}";
+
+        if (!Directory.Exists(fileFolder))
+        {
+            Directory.CreateDirectory(fileFolder);
+        }
+
+        var filePath = Path.Combine(fileFolder, fileName);
 
         await using var stream = new FileStream(filePath, FileMode.Create);
-        
+
         await file.CopyToAsync(stream, cancellationToken);
     }
 }

@@ -18,4 +18,9 @@
     <ProjectReference Include="..\03_Application\03_Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ThirdParty\" />
+    <Folder Include="ThirdParty\VideoFrameAnalyser\" />
+  </ItemGroup>
+
 </Project>

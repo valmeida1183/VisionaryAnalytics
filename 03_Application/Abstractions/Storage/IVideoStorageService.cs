@@ -3,5 +3,8 @@
 namespace Application.Abstractions.Storage;
 public interface IVideoStorageService
 {
-    Task CreateVideoFileAsync(IFormFile file, string fileName, CancellationToken cancellationToken);
+    Task CreateVideoFileAsync(IFormFile file, 
+                              Guid fileId, 
+                              string fileName, 
+                              CancellationToken cancellationToken);
 }

@@ -5,7 +5,7 @@ using MassTransit;
 using SharedKernel.Enums;
 
 namespace QueueConsumer.VideoProcesses;
-internal sealed class VideoProcessCreatedConsumer : IConsumer<VideoProcessCreatedIntegrationEvent>
+public sealed class VideoProcessCreatedConsumer : IConsumer<VideoProcessCreatedIntegrationEvent>
 {
     private readonly IVideoProcessRepository _videoProcessRepository;
     private readonly IVideoStorageService _videoStorageService;
