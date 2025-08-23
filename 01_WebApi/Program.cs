@@ -10,11 +10,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Configuration.GetValue<string>("MongoDbName");
+//builder.Configuration.GetValue<string>("MongoDbName");
 
 builder.Services
-    .AddApplication()
-    .AddInfraestructure(builder.Configuration);
+    .AddApplicationConfiguration()
+    .AddInfraestructureConfiguration()
+    .AddDataBaseConfiguration(builder.Configuration)
+    .AddStorageConfiguration(builder.Configuration)
+    .AddMassTransitProducerConfiguration(builder.Configuration);
 
 var app = builder.Build();
 

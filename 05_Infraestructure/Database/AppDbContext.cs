@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Infraestructure.Database;
 public sealed class AppDbContext : DbContext
 {
-    public DbSet<VideoProcessResult> VideoProcessResults { get; set; }
+    public DbSet<VideoProcess> VideoProcess { get; set; }
     public DbSet<VideoQRCode> VideoQRCodes { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)

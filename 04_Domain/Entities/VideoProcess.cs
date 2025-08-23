@@ -2,7 +2,7 @@
 using SharedKernel.Enums;
 
 namespace Domain.Entities;
-public class VideoProcessResult : Entity
+public class VideoProcess : Entity
 {
     public required string FileName { get; set; }
     public required string OriginalName { get; set; }

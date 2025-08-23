@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.VideoProcessResults.Create;
+namespace Application.VideoProcesses.Create;
 internal sealed class CreateVideoProcessCommandValidator : AbstractValidator<CreateVideoProcessCommand>
 {
     public CreateVideoProcessCommandValidator()

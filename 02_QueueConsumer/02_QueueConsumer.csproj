@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\07_CrossCutting\07_CrossCutting.csproj" />
+  </ItemGroup>
 </Project>

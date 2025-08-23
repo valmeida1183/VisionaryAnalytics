@@ -3,15 +3,15 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using SharedKernel.Enums;
 
-namespace Application.VideoProcessResults.Create;
-public sealed record CreateVideoProcessCommand(IFormFile File) : ICommand<VideoProcessResult>
+namespace Application.VideoProcesses.Create;
+public sealed record CreateVideoProcessCommand(IFormFile File) : ICommand<VideoProcess>
 {
-    public static implicit operator VideoProcessResult(CreateVideoProcessCommand command)
+    public static implicit operator VideoProcess(CreateVideoProcessCommand command)
     {
         var fileExtension = command.File.FileName.ToLowerInvariant().Split('.').Last();
         var id = Guid.NewGuid();
 
-        return new VideoProcessResult
+        return new VideoProcess
         {
             Id = id,
             FileName = $"{id}.{fileExtension}",

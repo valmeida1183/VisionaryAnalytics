@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace Infraestructure.Database.Configuration;
-internal sealed class VideoProcessResultConfiguration : IEntityTypeConfiguration<VideoProcessResult>
+internal sealed class VideoProcessConfiguration : IEntityTypeConfiguration<VideoProcess>
 {
-    public void Configure(EntityTypeBuilder<VideoProcessResult> builder)
+    public void Configure(EntityTypeBuilder<VideoProcess> builder)
     {
         builder.HasKey(vpr => vpr.Id);
         builder.Property(vpr => vpr.Id).HasElementName("_id");

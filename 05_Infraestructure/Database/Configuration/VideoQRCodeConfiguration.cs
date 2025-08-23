@@ -13,10 +13,10 @@ internal sealed class VideoQRCodeConfiguration : IEntityTypeConfiguration<VideoQ
 
         builder.Property(vqc => vqc.TimeStamp).HasElementName("timeStamp");
         builder.Property(vqc => vqc.DataContent).HasElementName("dataContent");
-        builder.Property(vqc => vqc.VideoProcessResultId).HasElementName("videoProcessResultId");
+        builder.Property(vqc => vqc.VideoProcessId).HasElementName("videoProcessId");
         builder.Property(vqc => vqc.CreatedOn).HasElementName("createdOn");
 
-        builder.HasIndex("VideoProcessResultId");
+        builder.HasIndex("VideoProcessId");
 
         builder.ToCollection("video_qrcodes");
     }

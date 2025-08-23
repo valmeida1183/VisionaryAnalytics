@@ -7,47 +7,47 @@ using Domain.Entities;
 using FluentValidation;
 using SharedKernel.Primitives;
 
-namespace Application.VideoProcessResults.Create;
-internal sealed class CreateVideoProcessCommandHandler : ICommandHandler<CreateVideoProcessCommand, VideoProcessResult>
+namespace Application.VideoProcesses.Create;
+internal sealed class CreateVideoProcessCommandHandler : ICommandHandler<CreateVideoProcessCommand, VideoProcess>
 {
-    private readonly IVideoProcessResultRepository _videoProcessResultRepository;
+    private readonly IVideoProcessRepository _videoProcessRepository;
     private readonly IVideoStorageService _videoStorageService;
     private readonly IMessageEventBusService _messageEventBusService;
     private readonly IValidator<CreateVideoProcessCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateVideoProcessCommandHandler(
-        IVideoProcessResultRepository videoProcessResultRepository,
+        IVideoProcessRepository videoProcessRepository,
         IVideoStorageService videoStorageService,
         IMessageEventBusService messageEventBusService,
         IValidator<CreateVideoProcessCommand> validator,
         IUnitOfWork unitOfWork)
     {
-        _videoProcessResultRepository = videoProcessResultRepository;
+        _videoProcessRepository = videoProcessRepository;
         _videoStorageService = videoStorageService;
         _messageEventBusService = messageEventBusService;
         _validator = validator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<VideoProcessResult>> Handle(CreateVideoProcessCommand command, CancellationToken cancellationToken)
+    public async Task<Result<VideoProcess>> Handle(CreateVideoProcessCommand command, CancellationToken cancellationToken)
     {
         var validationResult = _validator.Validate(command);
 
         if (!validationResult.IsValid)
         {
-            return Result.Failure<VideoProcessResult>(validationResult.ResultErrors());
+            return Result.Failure<VideoProcess>(validationResult.ResultErrors());
         }
 
-        VideoProcessResult videoProcessResult = command;
+        VideoProcess videoProcess = command;
 
-        await _videoProcessResultRepository.AddAsync(videoProcessResult);
+        await _videoProcessRepository.AddAsync(videoProcess);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         // Domain Events?
-        await _videoStorageService.CreateVideoFileAsync(command.File, videoProcessResult.FileName, cancellationToken);
-        await _messageEventBusService.PublishAsync(videoProcessResult, cancellationToken);
+        await _videoStorageService.CreateVideoFileAsync(command.File, videoProcess.FileName, cancellationToken);
+        await _messageEventBusService.PublishAsync(videoProcess, cancellationToken);
 
-        return Result.Success(videoProcessResult);
+        return Result.Success(videoProcess);
     }
 }

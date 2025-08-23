@@ -14,7 +14,7 @@ public static class VideoEndpoints
         {
             var command = new CreateVideoProcessCommand(file);
 
-            Result<VideoProcessResult> result = await sender.Send(command, cancellationToken);
+            Result<VideoProcess> result = await sender.Send(command, cancellationToken);
 
             return result.Match(Results.Ok, Results.BadRequest);
         })
@@ -25,7 +25,4 @@ public static class VideoEndpoints
         .WithName("UploadVideo")
         .WithTags(EndpointTags.Video);
     }
-
-    // Parei em iniciar a camada de Infra persistindo o dado no MongoDB utilizando EF Core e MongoDB.Driver.
-    // Revisar a modelagem das entidades
 }

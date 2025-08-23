@@ -16,7 +16,7 @@ using Infraestructure.MessageBus;
 namespace CrossCutting.DI;
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplicationConfiguration(this IServiceCollection services)
     {
         var appAssembly = Assembly.Load("03_Application");
 
@@ -24,27 +24,20 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(appAssembly)
         );
         services.AddValidatorsFromAssembly(appAssembly, includeInternalTypes: true);
-
-        // Register other application-specific services here
-        // e.g., services.AddScoped<IYourService, YourService>();
+        
         return services;
     }
 
-    public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfraestructureConfiguration(this IServiceCollection services)
     {
-        services
-            .AddDataBaseConfiguration(configuration)
-            .AddStorageConfiguration(configuration)
-            .AddMassTransitConfiguration(configuration);
-
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IVideoProcessResultRepository, VideoProcessResultRepository>();
+        services.AddScoped<IVideoProcessRepository, VideoProcessRepository>();
         services.AddScoped<IVideoQrCodeRepository, VideoQrCodeRepository>();
 
         return services;
     }
 
-    private static IServiceCollection AddDataBaseConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDataBaseConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         var mongoDbName = configuration.GetValue<string>("MongoDbName") ?? "VisionaryAnalytics";
@@ -60,11 +53,16 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddMassTransitConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddMassTransitProducerConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         var host = configuration.GetSection("RabbitMq:Host").Value;
         var user = configuration.GetSection("RabbitMq:User").Value ?? "guest";
         var password = configuration.GetSection("RabbitMq:Password").Value ?? "guest";
+
+        if (string.IsNullOrEmpty(host) ||
+            string.IsNullOrEmpty(user) ||
+            string.IsNullOrEmpty(password))
+            throw new Exception("Missing environment variables to configure MassTransit");
 
         services.AddMassTransit(x =>
         {
@@ -83,7 +81,37 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddStorageConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddMassTransitConsumerConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        var host = configuration.GetSection("RabbitMq:Host").Value;
+        var queue = configuration.GetSection("RabbitMq:Queue").Value;
+        var user = configuration.GetSection("RabbitMq:User").Value ?? "guest";
+        var password = configuration.GetSection("RabbitMq:Password").Value ?? "guest";
+
+        if (string.IsNullOrEmpty(host) ||
+            string.IsNullOrEmpty(queue) ||
+            string.IsNullOrEmpty(user) ||
+            string.IsNullOrEmpty(password))
+            throw new Exception("Missing environment variables to configure MassTransit");
+
+        services.AddMassTransit(x =>
+        {
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(host, "/", h =>
+                {
+                    h.Username(user);
+                    h.Password(password);
+                });
+            });
+        });
+
+        services.AddScoped<IMessageEventBusService, MessageEventBusService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddStorageConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         var storagePath = configuration.GetValue<string>("StoragePath") ?? "/app/videos";
         services.AddSingleton<IVideoStorageService>(new VideoStorageService(storagePath));
