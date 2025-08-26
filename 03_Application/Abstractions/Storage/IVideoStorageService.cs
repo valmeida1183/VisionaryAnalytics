@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SharedKernel.Primitives;
 
 namespace Application.Abstractions.Storage;
 public interface IVideoStorageService

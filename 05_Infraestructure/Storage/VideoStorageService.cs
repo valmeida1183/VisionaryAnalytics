@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Storage;
 using Microsoft.AspNetCore.Http;
+using SharedKernel.Primitives;
 
 namespace Infraestructure.Storage;
 public class VideoStorageService : IVideoStorageService
@@ -41,7 +42,8 @@ public class VideoStorageService : IVideoStorageService
 
     public void DeleteVideoFile(Guid fileId)
     {
-        var fileFolder = $"{_storagePath}/{fileId}";
+        var fileFolder = GetVideoFolderPath(fileId);
+
         if (Directory.Exists(fileFolder))
         {
             Directory.Delete(fileFolder, true);

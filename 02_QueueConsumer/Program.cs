@@ -9,6 +9,7 @@ builder.Logging.AddConsole();
 builder.Services.AddHostedService<Worker>();
 
 builder.Services
+    .AddApplicationConfiguration()
     .AddInfraestructureConfiguration(builder.Configuration)
     .AddDataBaseConfiguration(builder.Configuration)
     .AddMassTransitConsumerConfiguration(builder.Configuration);

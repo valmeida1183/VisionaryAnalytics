@@ -36,7 +36,8 @@ public static class DependencyInjection
         var ffmpegPath = configuration.GetValue<string>("FFMpegPath") ?? "/usr/bin/ffmpeg";
 
         services.AddSingleton<IVideoStorageService>(new VideoStorageService(storagePath));
-        services.AddScoped<IVideoFrameAnalyserService>(provider => new VideoFrameAnalyserService(ffmpegPath));
+        services.AddScoped<IVideoFrameAnalyzerService>(provider => new FFMpegVideoAnalyzerService(ffmpegPath));
+        services.AddScoped<IMessageEventBusService, MessageEventBusService>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IVideoProcessRepository, VideoProcessRepository>();
@@ -83,8 +84,6 @@ public static class DependencyInjection
                 });
             });
         });
-
-        services.AddScoped<IMessageEventBusService, MessageEventBusService>();
 
         return services;
     }

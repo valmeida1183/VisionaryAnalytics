@@ -40,6 +40,7 @@ internal sealed class CreateVideoProcessCommandHandler : ICommandHandler<CreateV
         }
 
         VideoProcess videoProcess = command;
+        videoProcess.FolderPath = _videoStorageService.GetVideoFolderPath(videoProcess.Id);
 
         await _videoProcessRepository.AddAsync(videoProcess);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
