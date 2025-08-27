@@ -3,5 +3,5 @@
 namespace Application.Abstractions.VideoAnalyser;
 public interface IVideoFrameAnalyzerService
 {
-    Task<IEnumerable<string>> ExtractImagesFramesAsync(string videoFolderPath, VideoProcess videoProcess, int frameRate = 1);
+    Task<IEnumerable<string>> ExtractImagesFramesAsync(string videoFolderPath, VideoProcess videoProcess);
 }

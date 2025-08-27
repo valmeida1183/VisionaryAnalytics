@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.QrCodeAnalyzer;
 using Application.Abstractions.Repositories;
 using Application.Abstractions.Storage;
 using Application.Abstractions.VideoAnalyser;
@@ -14,6 +15,7 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
     private readonly IVideoProcessRepository _videoProcessRepository;
     private readonly IVideoStorageService _videoStorageService;
     private readonly IVideoFrameAnalyzerService _videoFrameAnalyserService;
+    private readonly IQrCodeAnalyzerService _qrCodeAnalyzerService;
     private readonly IValidator<AnalyzeVideoProcessCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -21,12 +23,14 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
         IVideoProcessRepository videoProcessRepository,
         IVideoStorageService videoStorageService,
         IVideoFrameAnalyzerService videoFrameAnalyserService,
+        IQrCodeAnalyzerService qrCodeAnalyzerService,
         IValidator<AnalyzeVideoProcessCommand> validator,
         IUnitOfWork unitOfWork)
     {
         _videoProcessRepository = videoProcessRepository;
         _videoStorageService = videoStorageService;
         _videoFrameAnalyserService = videoFrameAnalyserService;
+        _qrCodeAnalyzerService = qrCodeAnalyzerService;
         _validator = validator;
         _unitOfWork = unitOfWork;
     }
@@ -57,6 +61,9 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
 
             var frames = await _videoFrameAnalyserService
                 .ExtractImagesFramesAsync(videoFolderPath, videoProcess!);
+
+            //TODO call _qrCodeAnalyzerService
+
 
             await SetVideoProcessStatus(
                 videoProcess, 

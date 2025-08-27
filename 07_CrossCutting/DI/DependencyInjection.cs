@@ -14,6 +14,8 @@ using Application.Abstractions.MessageBus;
 using Infraestructure.MessageBus;
 using Application.Abstractions.VideoAnalyser;
 using Infraestructure.VideoAnalyser;
+using Application.Abstractions.QrCodeAnalyzer;
+using Infraestructure.QrCodeAnalyzer;
 
 namespace CrossCutting.DI;
 public static class DependencyInjection
@@ -37,6 +39,7 @@ public static class DependencyInjection
 
         services.AddSingleton<IVideoStorageService>(new VideoStorageService(storagePath));
         services.AddScoped<IVideoFrameAnalyzerService>(provider => new FFMpegVideoAnalyzerService(ffmpegPath));
+        services.AddScoped<IQrCodeAnalyzerService, ZxingQrCodeAnalyzerService>();
         services.AddScoped<IMessageEventBusService, MessageEventBusService>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();

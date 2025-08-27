@@ -16,6 +16,7 @@ internal sealed class VideoProcessConfiguration : IEntityTypeConfiguration<Video
         builder.Property(vpr => vpr.FolderPath).HasElementName("folderPath");
         builder.Property(vpr => vpr.OriginalName).HasElementName("originalName");
         builder.Property(vpr => vpr.Size).HasElementName("size");
+        builder.Property(vpr => vpr.FramePerSecond).HasElementName("framePerSecond");
         builder.Property(vpr => vpr.ProcessedOn).HasElementName("processedOn");
         builder.Property(vpr => vpr.Status).HasElementName("status");
         builder.Property(vpr => vpr.CreatedOn).HasElementName("createdOn");

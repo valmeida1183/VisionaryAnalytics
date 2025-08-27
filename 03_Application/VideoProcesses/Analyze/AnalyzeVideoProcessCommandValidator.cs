@@ -24,7 +24,6 @@ internal sealed class AnalyzeVideoProcessCommandValidator: AbstractValidator<Ana
                     .Must(folderPath => Directory.Exists(folderPath))
                     .WithErrorCode("VideoProcess.FolderPathNotExist")
                     .WithMessage("FolderPath does not exist.");
-
             });        
     }
 }

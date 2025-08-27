@@ -9,6 +9,7 @@ public class VideoProcess : Entity
     public string? FolderPath { get; set; }
     public required string OriginalName { get; set; }
     public long Size { get; set; }
+    public int FramePerSecond { get; set; } = 1;
     public DateTime? ProcessedOn { get; set; }
     public ProcessStatus Status { get; set; }
 

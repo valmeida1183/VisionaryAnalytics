@@ -14,7 +14,7 @@ public class FFMpegVideoAnalyzerService : IVideoFrameAnalyzerService
         GlobalFFOptions.Configure(options => options.BinaryFolder = _ffmpegPath);
     }
 
-    public async Task<IEnumerable<string>> ExtractImagesFramesAsync(string videoFolderPath, VideoProcess videoProcess, int frameRate = 1)
+    public async Task<IEnumerable<string>> ExtractImagesFramesAsync(string videoFolderPath, VideoProcess videoProcess)
     {
         var frameFilePaths = new List<string>();
         var frameFolder = Path.Combine(videoFolderPath, "Frames");
@@ -31,7 +31,7 @@ public class FFMpegVideoAnalyzerService : IVideoFrameAnalyzerService
             .OutputToFile(outputPattern, overwrite: true, options => options
                 .WithVideoCodec("png")
                 .ForceFormat("image2")
-                .WithCustomArgument($"-vf fps={frameRate}")
+                .WithCustomArgument($"-vf fps={videoProcess.FramePerSecond}")
              )
             .ProcessAsynchronously();
 
