@@ -13,6 +13,7 @@ namespace Application.VideoProcesses.Analyze;
 internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<AnalyzeVideoProcessCommand>
 {
     private readonly IVideoProcessRepository _videoProcessRepository;
+    private readonly IVideoQrCodeRepository _videoQrCodeRepository;
     private readonly IVideoStorageService _videoStorageService;
     private readonly IVideoFrameAnalyzerService _videoFrameAnalyserService;
     private readonly IQrCodeAnalyzerService _qrCodeAnalyzerService;
@@ -21,6 +22,7 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
 
     public AnalyzeVideoProcessCommandHandler(
         IVideoProcessRepository videoProcessRepository,
+        IVideoQrCodeRepository videoQrCodeRepository,
         IVideoStorageService videoStorageService,
         IVideoFrameAnalyzerService videoFrameAnalyserService,
         IQrCodeAnalyzerService qrCodeAnalyzerService,
@@ -28,6 +30,7 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
         IUnitOfWork unitOfWork)
     {
         _videoProcessRepository = videoProcessRepository;
+        _videoQrCodeRepository = videoQrCodeRepository;
         _videoStorageService = videoStorageService;
         _videoFrameAnalyserService = videoFrameAnalyserService;
         _qrCodeAnalyzerService = qrCodeAnalyzerService;
@@ -61,10 +64,12 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
 
             var frames = await _videoFrameAnalyserService
                 .ExtractImagesFramesAsync(videoFolderPath, videoProcess!);
+           
+            var qrCodes = await _qrCodeAnalyzerService
+                .DecodeQrCodeFromImages(frames, videoProcess!);
 
-            //TODO call _qrCodeAnalyzerService
-
-
+            await SaveQrCodes(qrCodes, cancellationToken);
+            
             await SetVideoProcessStatus(
                 videoProcess, 
                 ProcessStatus.Finished, 
@@ -90,9 +95,25 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
             return;
         }
 
+        if (processStatus == ProcessStatus.Finished)
+        {
+            videoProcess.ProcessedOn = DateTime.UtcNow;
+        }
+
         videoProcess.Status = processStatus;
 
         _videoProcessRepository.Update(videoProcess);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task SaveQrCodes(IEnumerable<VideoQRCode> qrCodes, CancellationToken cancellationToken)
+    {
+        if (qrCodes is null || !qrCodes.Any())
+        {
+            return;
+        }
+
+        await _videoQrCodeRepository.AddRangeAsync(qrCodes);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

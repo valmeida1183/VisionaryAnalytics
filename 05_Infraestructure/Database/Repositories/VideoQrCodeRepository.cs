@@ -33,6 +33,13 @@ public class VideoQrCodeRepository : IVideoQrCodeRepository
             .AddAsync(videoQRCode);
     }
 
+    public async Task AddRangeAsync(IEnumerable<VideoQRCode> videoQRCodes)
+    {
+        await _appDbContext
+            .VideoQRCodes
+            .AddRangeAsync(videoQRCodes);
+    }
+
     public void Update(VideoQRCode videoQRCode)
     {
         _appDbContext

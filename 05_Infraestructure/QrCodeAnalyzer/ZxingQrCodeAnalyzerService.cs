@@ -6,45 +6,21 @@ using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using ZXing;
 using ZXing.Common;
-using ZXing.ImageSharp;
 
 namespace Infraestructure.QrCodeAnalyzer;
 public sealed class ZxingQrCodeAnalyzerService : IQrCodeAnalyzerService
 {
-    private readonly ZXing.BarcodeReader<Image<L8>> _readerGray;
-
     public ZxingQrCodeAnalyzerService()
-    {
-
-        _readerGray = new ZXing.BarcodeReader<Image<L8>>(
-            img => new ImageSharpLuminanceSource<L8>(img))
-        {
-            AutoRotate = true,
-            Options = new DecodingOptions
-            {
-                TryHarder = true,
-                PossibleFormats = [BarcodeFormat.QR_CODE]
-            }
-        };
+    {        
     }
 
-    public string? DecodeQrCodeFromImage(string imagePath)
-    {
-        using var image = Image.Load<L8>(imagePath);
-        var result = _readerGray.Decode(image);
-
-        return result?.Text;
-    }
-
-    public async Task<IEnumerable<VideoQRCode>> DecodeQrCodeFromImages(IEnumerable<string> framesPath, VideoProcess videoProcess)
+    public async Task<IEnumerable<VideoQRCode>> DecodeQrCodeFromImages(IEnumerable<string> framesPaths, VideoProcess videoProcess)
     {
         var qrCodes = new ConcurrentDictionary<string, VideoQRCode>();
 
-        await Parallel.ForEachAsync(framesPath, async (framePath, cancellationToken) =>
+        await Parallel.ForEachAsync(framesPaths, async (framePath, cancellationToken) =>
         {
             var qrDataContent = DecodeQrCodeFromImage(framePath);
-
-            // TODO add a try catch to log errors
 
             if (!string.IsNullOrWhiteSpace(qrDataContent))
             {
@@ -62,6 +38,38 @@ public sealed class ZxingQrCodeAnalyzerService : IQrCodeAnalyzerService
         });
 
         return qrCodes.Values;
+    }
+
+    private string? DecodeQrCodeFromImage(string imagePath)
+    {
+        using var image = Image.Load<Rgba32>(imagePath);
+
+        // Copia pixels para array de bytes (formato RGBA)
+        var pixels = new byte[image.Width * image.Height * 4];
+        image.CopyPixelDataTo(pixels);
+
+        // Cria a fonte de luminância
+        var luminance = new RGBLuminanceSource(
+            pixels,
+            image.Width,
+            image.Height,
+            RGBLuminanceSource.BitmapFormat.RGBA32);
+
+        // Cria um BinaryBitmap a partir da luminância
+        var binarizer = new HybridBinarizer(luminance);
+        var binaryBitmap = new BinaryBitmap(binarizer);
+
+        // Configura o leitor para procurar apenas QR Codes
+        var reader = new MultiFormatReader();
+        var hints = new Dictionary<DecodeHintType, object>
+        {
+            { DecodeHintType.POSSIBLE_FORMATS, new List<BarcodeFormat> { BarcodeFormat.QR_CODE } },
+            { DecodeHintType.TRY_HARDER, true }
+        };
+
+        var result = reader.decode(binaryBitmap, hints);
+
+        return result?.Text;
     }
 
     private TimeSpan ExtractTimestampFromFrame(string framePath, int fps)
