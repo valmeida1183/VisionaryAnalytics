@@ -3,16 +3,14 @@ using CrossCutting.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-//builder.Configuration.GetValue<string>("MongoDbName");
+builder.WebHost.ConfigureKestrel(options =>
+{
+    // Remove the file size limitation for Kestrel
+    options.Limits.MaxRequestBodySize = null; 
+});
 
 builder.Services
+    .AddWebApiConfiguration()
     .AddApplicationConfiguration()
     .AddInfraestructureConfiguration(builder.Configuration)
     .AddDataBaseConfiguration(builder.Configuration)

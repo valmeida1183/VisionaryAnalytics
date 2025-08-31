@@ -24,6 +24,7 @@ public static class VideoEndpoints
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest)
         .WithName("UploadVideo")
-        .WithTags(EndpointTags.VideoProcess);
+        .WithTags(EndpointTags.VideoProcess)
+        .WithMetadata(new RequestSizeLimitAttribute(200_000_000));
     }
 }

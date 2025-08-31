@@ -1,26 +1,41 @@
-﻿using Application.Abstractions.Repositories;
+﻿using Application.Abstractions.MessageBus;
+using Application.Abstractions.QrCodeAnalyzer;
+using Application.Abstractions.Repositories;
 using Application.Abstractions.Storage;
+using Application.Abstractions.VideoAnalyser;
+using Domain.ValueObjects;
 using FluentValidation;
 using Infraestructure.Database;
 using Infraestructure.Database.Repositories;
+using Infraestructure.MessageBus;
+using Infraestructure.QrCodeAnalyzer;
 using Infraestructure.Storage;
+using Infraestructure.VideoAnalyser;
+using MassTransit;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using System.Reflection;
-using MassTransit;
-using Application.Abstractions.MessageBus;
-using Infraestructure.MessageBus;
-using Application.Abstractions.VideoAnalyser;
-using Infraestructure.VideoAnalyser;
-using Application.Abstractions.QrCodeAnalyzer;
-using Infraestructure.QrCodeAnalyzer;
-using Domain.ValueObjects;
 
 namespace CrossCutting.DI;
 public static class DependencyInjection
 {
+    public static IServiceCollection AddWebApiConfiguration(this IServiceCollection services)
+    {
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+        services.Configure<FormOptions>(options =>
+        {
+            // Set file size limit to 200 MB on Asp.net middleware
+            options.MultipartBodyLengthLimit = 200_000_000; 
+        });
+
+        return services;
+    }
+
     public static IServiceCollection AddApplicationConfiguration(this IServiceCollection services)
     {
         var appAssembly = Assembly.Load("03_Application");
