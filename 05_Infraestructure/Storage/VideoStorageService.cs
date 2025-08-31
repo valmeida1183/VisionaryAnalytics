@@ -1,15 +1,16 @@
 ﻿using Application.Abstractions.Storage;
+using Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
-using SharedKernel.Primitives;
+using Microsoft.Extensions.Options;
 
 namespace Infraestructure.Storage;
 public class VideoStorageService : IVideoStorageService
 {
-    private readonly string _storagePath;
+    private readonly FileStorageSettings _settings;
 
-    public VideoStorageService(string storagePath)
+    public VideoStorageService(IOptions<FileStorageSettings> options)
     {
-        _storagePath = storagePath;
+        _settings = options.Value;
     }
 
     public async Task CreateVideoFileAsync(IFormFile file, Guid fileId, string fileName, CancellationToken cancellationToken)
@@ -28,19 +29,34 @@ public class VideoStorageService : IVideoStorageService
         await file.CopyToAsync(stream, cancellationToken);
     }
 
-    public string GetVideoFilePath(Guid fileId, string fileName)
-    {
-        var filePath = Path.Combine(_storagePath, fileId.ToString(), fileName);
-        return filePath;
-    }
-
     public string GetVideoFolderPath(Guid fileId)
     {
-        var folderPath = Path.Combine(_storagePath, fileId.ToString());
+        var folderPath = Path.Combine(
+            _settings.Root,
+            _settings.AppFolderName,
+            _settings.VideoFolderName,
+            fileId.ToString());
+
         return folderPath;
     }
 
-    public void DeleteVideoFile(Guid fileId)
+    public string GetVideoFilePath(Guid fileId, string fileName)
+    {
+        var folderPath = GetVideoFolderPath(fileId);
+        var filePath = Path.Combine(folderPath, fileName);
+
+        return filePath;
+    }
+
+    public string GetFFMpegBinaryFolderPath()
+    {
+        return Path.Combine(
+            _settings.Root, 
+            _settings.FFMpegFolderName, 
+            _settings.FFMpegBinariesFolderName);
+    }
+
+    public void DeleteVideoFolder(Guid fileId)
     {
         var fileFolder = GetVideoFolderPath(fileId);
 

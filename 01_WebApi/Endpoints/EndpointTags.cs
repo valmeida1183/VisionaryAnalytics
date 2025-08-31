@@ -2,6 +2,6 @@
 
 public static class EndpointTags
 {
-    public const string Video = "Video";
-    public const string User = "ProcessStatus";
+    public const string VideoProcess = "Video Process";
+    public const string QrCodes = "QR Codes";
 }

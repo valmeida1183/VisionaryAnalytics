@@ -40,14 +40,39 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
 
     public async Task<Result> Handle(AnalyzeVideoProcessCommand command, CancellationToken cancellationToken)
     {
-        var validationResult = _validator.Validate(command);
-
-        if (!validationResult.IsValid)
+        try
         {
-            return Result.Failure(validationResult.ResultErrors());
-        }
+            var validationResult = _validator.Validate(command);
 
-        return await AnalyzeVideo(command.VideoProcess!, command.VideoProcess!.FolderPath!, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                return Result.Failure(validationResult.ResultErrors());
+            }
+
+            await SetVideoProcessStatus(command.VideoProcess!,
+                                        ProcessStatus.InProcess,
+                                        cancellationToken);
+
+            var result = await AnalyzeVideo(command.VideoProcess!, 
+                                            command.VideoProcess!.FolderPath!, 
+                                            cancellationToken);
+
+            await SetVideoProcessStatus(command.VideoProcess!,
+                                        ProcessStatus.Finished,
+                                        cancellationToken);
+
+            _videoStorageService.DeleteVideoFolder(command.VideoProcess.Id);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            await SetVideoProcessStatus(command.VideoProcess!,
+                                        ProcessStatus.Failure,
+                                        cancellationToken);
+
+            return Result.Failure(new List<Error> { Error.Failure("VideoProcess.AnalyzeError", ex.Message) });
+        }
     }
 
     private async Task<Result> AnalyzeVideo(
@@ -55,37 +80,15 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
         string videoFolderPath,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            await SetVideoProcessStatus(
-                videoProcess, 
-                ProcessStatus.InProcess, 
-                cancellationToken);
+        var frames = await _videoFrameAnalyserService
+               .ExtractImagesFramesAsync(videoFolderPath, videoProcess!);
 
-            var frames = await _videoFrameAnalyserService
-                .ExtractImagesFramesAsync(videoFolderPath, videoProcess!);
-           
-            var qrCodes = await _qrCodeAnalyzerService
-                .DecodeQrCodeFromImages(frames, videoProcess!);
+        var qrCodes = await _qrCodeAnalyzerService
+            .DecodeQrCodeFromImages(frames, videoProcess!);
 
-            await SaveQrCodes(qrCodes, cancellationToken);
-            
-            await SetVideoProcessStatus(
-                videoProcess, 
-                ProcessStatus.Finished, 
-                cancellationToken);
+        await SaveQrCodes(qrCodes, cancellationToken);
 
-            return Result.Success();
-        }
-        catch (Exception ex)
-        {
-            await SetVideoProcessStatus(
-                videoProcess, 
-                ProcessStatus.Failure, 
-                cancellationToken);
-
-            return Result.Failure(new List<Error> { Error.Failure("VideoProcess.AnalyzeError", ex.Message) });
-        }
+        return Result.Success(qrCodes);
     }
 
     private async Task SetVideoProcessStatus(VideoProcess? videoProcess, ProcessStatus processStatus, CancellationToken cancellationToken)

@@ -16,6 +16,7 @@ using Application.Abstractions.VideoAnalyser;
 using Infraestructure.VideoAnalyser;
 using Application.Abstractions.QrCodeAnalyzer;
 using Infraestructure.QrCodeAnalyzer;
+using Domain.ValueObjects;
 
 namespace CrossCutting.DI;
 public static class DependencyInjection
@@ -34,11 +35,11 @@ public static class DependencyInjection
 
     public static IServiceCollection AddInfraestructureConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        var storagePath = configuration.GetValue<string>("StoragePath") ?? "/app/videos";
-        var ffmpegPath = configuration.GetValue<string>("FFMpegPath") ?? "/usr/bin/ffmpeg";
+        services.Configure<FileStorageSettings>(
+            configuration.GetSection("FileStorageSettings"));
 
-        services.AddSingleton<IVideoStorageService>(new VideoStorageService(storagePath));
-        services.AddScoped<IVideoFrameAnalyzerService>(provider => new FFMpegVideoAnalyzerService(ffmpegPath));
+        services.AddSingleton<IVideoStorageService, VideoStorageService>();
+        services.AddScoped<IVideoFrameAnalyzerService, FFMpegVideoAnalyzerService>();
         services.AddScoped<IQrCodeAnalyzerService, ZxingQrCodeAnalyzerService>();
         services.AddScoped<IMessageEventBusService, MessageEventBusService>();
 

@@ -6,7 +6,7 @@ internal sealed class CreateVideoProcessCommandValidator : AbstractValidator<Cre
     public CreateVideoProcessCommandValidator()
     {
         const long Mb = 1024 * 1024;
-        const long maxFileSize = 100 * Mb; // 100 MB
+        const long maxFileSize = 200 * Mb; // 100 MB
         var allowedExtensions = new[] { ".mp4", ".avi" };
 
         RuleFor(x => x.File)

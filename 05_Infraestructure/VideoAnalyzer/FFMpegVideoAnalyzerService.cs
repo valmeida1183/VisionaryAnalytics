@@ -1,17 +1,24 @@
 ﻿using Application.Abstractions.VideoAnalyser;
 using Domain.Entities;
+using Domain.ValueObjects;
 using FFMpegCore;
+using Microsoft.Extensions.Options;
 
 namespace Infraestructure.VideoAnalyser;
 public class FFMpegVideoAnalyzerService : IVideoFrameAnalyzerService
 {
-    private readonly string _ffmpegPath;
+    private readonly FileStorageSettings _settings;
 
-    public FFMpegVideoAnalyzerService(string ffmpegPath)
+    public FFMpegVideoAnalyzerService(IOptions<FileStorageSettings> options)
     {
-        _ffmpegPath = ffmpegPath;
+        _settings = options.Value;
 
-        GlobalFFOptions.Configure(options => options.BinaryFolder = _ffmpegPath);
+        var ffmpegBinaryFolderPath = Path.Combine(
+            _settings.Root,
+            _settings.FFMpegFolderName,
+            _settings.FFMpegBinariesFolderName);
+
+        GlobalFFOptions.Configure(options => options.BinaryFolder = ffmpegBinaryFolderPath);
     }
 
     public async Task<IEnumerable<string>> ExtractImagesFramesAsync(string videoFolderPath, VideoProcess videoProcess)

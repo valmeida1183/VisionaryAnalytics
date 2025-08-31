@@ -1,6 +1,7 @@
 ﻿using Application.VideoProcesses.Create;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Primitives;
 using WebApi.Extensions;
 
@@ -23,6 +24,6 @@ public static class VideoEndpoints
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest)
         .WithName("UploadVideo")
-        .WithTags(EndpointTags.Video);
+        .WithTags(EndpointTags.VideoProcess);
     }
 }
