@@ -12,18 +12,18 @@ public class VideoProcessRepository : IVideoProcessRepository
         _appDbContext = appDbContext;
     }
 
-    public async Task<IEnumerable<VideoProcess>> GetAllAsync()
+    public async Task<IEnumerable<VideoProcess>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _appDbContext
             .VideoProcess
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<VideoProcess?> GetByIdAsync(Guid id)
+    public async Task<VideoProcess?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _appDbContext
             .VideoProcess
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task AddAsync(VideoProcess videoProcess)

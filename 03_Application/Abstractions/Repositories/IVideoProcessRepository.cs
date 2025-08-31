@@ -3,8 +3,8 @@
 namespace Application.Abstractions.Repositories;
 public interface IVideoProcessRepository
 {
-    Task<IEnumerable<VideoProcess>> GetAllAsync();
-    Task<VideoProcess?> GetByIdAsync(Guid id);
+    Task<IEnumerable<VideoProcess>> GetAllAsync(CancellationToken cancellationToken);
+    Task<VideoProcess?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task AddAsync(VideoProcess videoProcess);
     void Update(VideoProcess videoProcess);

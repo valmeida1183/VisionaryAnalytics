@@ -1,4 +1,5 @@
 ﻿using Application.VideoProcesses.Create;
+using Application.VideoProcesses.GetById;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,5 +27,17 @@ public static class VideoEndpoints
         .WithName("UploadVideo")
         .WithTags(EndpointTags.VideoProcess)
         .WithMetadata(new RequestSizeLimitAttribute(200_000_000));
+
+        app.MapGet("videos/status/{id:guid}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var query = new GetVideoProcessStatusByIdQuery(id);
+
+            Result<string> result = await sender.Send(query, cancellationToken);
+            
+            return result.Match(Results.Ok, Results.NotFound);
+        })
+        .Produces(StatusCodes.Status200OK)
+        .WithName("VideoProcessStatus")
+        .WithTags(EndpointTags.VideoProcess);
     }
 }

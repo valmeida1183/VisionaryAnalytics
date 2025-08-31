@@ -26,7 +26,7 @@ public sealed class VideoProcessCreatedConsumer : IConsumer<VideoProcessCreatedI
         var message = context.Message;
         _logger.LogInformation("Received VideoProcessCreatedIntegrationEvent for VideoProcess Id: {VideoProcessId}", message.Id);
         
-        var videoProcess = await _videoProcessRepository.GetByIdAsync(message.Id);
+        var videoProcess = await _videoProcessRepository.GetByIdAsync(message.Id, context.CancellationToken);
 
         if (videoProcess is null)
             return;
