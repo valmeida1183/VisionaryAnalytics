@@ -8,9 +8,9 @@ using WebApi.Extensions;
 
 namespace WebApi.Endpoints.Video;
 
-public static class VideoEndpoints 
+public static class VideoProcessEndpoints 
 {
-    public static void AddVideoEndpoints(this IEndpointRouteBuilder app)
+    public static void AddVideoProcessEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapPost("videos", async (IFormFile file, ISender sender, CancellationToken cancellationToken) =>
         {

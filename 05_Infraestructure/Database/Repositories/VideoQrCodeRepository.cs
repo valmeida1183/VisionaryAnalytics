@@ -12,18 +12,19 @@ public class VideoQrCodeRepository : IVideoQrCodeRepository
         _appDbContext = appDbContext;
     }
 
-    public async Task<IEnumerable<VideoQRCode>> GetAllAsync()
+    public async Task<IEnumerable<VideoQRCode>> GetByVideoProcessIdAsync(Guid videoProcessId, CancellationToken cancellationToken)
     {
         return await _appDbContext
             .VideoQRCodes
-            .ToListAsync();
+            .Where(x => x.VideoProcessId == videoProcessId)
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<VideoQRCode?> GetByIdAsync(Guid id)
+    public async Task<VideoQRCode?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _appDbContext
             .VideoQRCodes
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task AddAsync(VideoQRCode videoQRCode)

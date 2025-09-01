@@ -3,8 +3,8 @@
 namespace Application.Abstractions.Repositories;
 public interface IVideoQrCodeRepository
 {
-    Task<IEnumerable<VideoQRCode>> GetAllAsync();
-    Task<VideoQRCode?> GetByIdAsync(Guid id);
+    Task<IEnumerable<VideoQRCode>> GetByVideoProcessIdAsync(Guid videoProcessId, CancellationToken cancellationToken);
+    Task<VideoQRCode?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task AddAsync(VideoQRCode videoQRCode);
     Task AddRangeAsync(IEnumerable<VideoQRCode> videoQRCodes);
     void Update(VideoQRCode videoQRCode);
