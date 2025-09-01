@@ -8,7 +8,7 @@ using FluentValidation;
 using SharedKernel.Primitives;
 
 namespace Application.VideoProcesses.Create;
-internal sealed class CreateVideoProcessCommandHandler : ICommandHandler<CreateVideoProcessCommand, VideoProcess>
+public sealed class CreateVideoProcessCommandHandler : ICommandHandler<CreateVideoProcessCommand, VideoProcess>
 {
     private readonly IVideoProcessRepository _videoProcessRepository;
     private readonly IVideoStorageService _videoStorageService;

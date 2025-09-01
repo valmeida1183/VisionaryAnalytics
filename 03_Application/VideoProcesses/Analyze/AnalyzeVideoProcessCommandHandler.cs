@@ -10,7 +10,7 @@ using SharedKernel.Enums;
 using SharedKernel.Primitives;
 
 namespace Application.VideoProcesses.Analyze;
-internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<AnalyzeVideoProcessCommand>
+public sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<AnalyzeVideoProcessCommand>
 {
     private readonly IVideoProcessRepository _videoProcessRepository;
     private readonly IVideoQrCodeRepository _videoQrCodeRepository;
@@ -80,11 +80,11 @@ internal sealed class AnalyzeVideoProcessCommandHandler : ICommandHandler<Analyz
         string videoFolderPath,
         CancellationToken cancellationToken)
     {
-        var frames = await _videoFrameAnalyserService
+        var framesPath = await _videoFrameAnalyserService
                .ExtractImagesFramesAsync(videoFolderPath, videoProcess!);
 
         var qrCodes = await _qrCodeAnalyzerService
-            .DecodeQrCodeFromImages(frames, videoProcess!);
+            .DecodeQrCodeFromImages(framesPath, videoProcess!);
 
         await SaveQrCodes(qrCodes, cancellationToken);
 

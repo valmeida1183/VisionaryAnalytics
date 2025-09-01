@@ -3,7 +3,7 @@ using Application.Abstractions.Repositories;
 using SharedKernel.Primitives;
 
 namespace Application.VideoProcesses.GetById;
-internal sealed class GetVideoProcessStatusByIdQueryHandler(IVideoProcessRepository videoProcessRepository) : IQueryHandler<GetVideoProcessStatusByIdQuery, string>
+public sealed class GetVideoProcessStatusByIdQueryHandler(IVideoProcessRepository videoProcessRepository) : IQueryHandler<GetVideoProcessStatusByIdQuery, string>
 {
     public async Task<Result<string>> Handle(GetVideoProcessStatusByIdQuery query, CancellationToken cancellationToken)
     {

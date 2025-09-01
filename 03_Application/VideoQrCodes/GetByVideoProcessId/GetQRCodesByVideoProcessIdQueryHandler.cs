@@ -4,7 +4,7 @@ using Domain.Entities;
 using SharedKernel.Primitives;
 
 namespace Application.VideoQrCodes.GetByVideoProcessId;
-internal sealed class GetQRCodesByVideoProcessIdQueryHandler(IVideoQrCodeRepository videoQrCodeRepository) 
+public sealed class GetQRCodesByVideoProcessIdQueryHandler(IVideoQrCodeRepository videoQrCodeRepository) 
     : IQueryHandler<GetQRCodesByVideoProcessIdQuery, IEnumerable<VideoQRCode>>
 {
     public async Task<Result<IEnumerable<VideoQRCode>>> Handle(GetQRCodesByVideoProcessIdQuery query, CancellationToken cancellationToken)
