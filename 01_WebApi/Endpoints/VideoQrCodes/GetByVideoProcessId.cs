@@ -6,9 +6,9 @@ using WebApi.Extensions;
 
 namespace WebApi.Endpoints.VideoQrCodes;
 
-public static class VideoQRCodeEndpoints
+public static class GetByVideoProcessId
 {
-    public static void AddVideoQrCodeEndpoints(this IEndpointRouteBuilder app)
+    public static void MapGetByVideoProcessIdQRCodesEndpoint(this IEndpointRouteBuilder app)
     {
         app.MapGet("qrcodes/{videoProcessId:guid}", async (Guid videoProcessId, ISender sender, CancellationToken cancellationToken) =>
         {
