@@ -1,15 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SharedKernel.Enums;
-public enum ErrorType
-{
-    Failure = 0,
-    Validation = 1,
-    Problem = 2,
-    NotFound = 3,
-    Conflict = 4
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:f4a070f099080463c63b226eefcd5e6183b8e0afd5c5f36efd0d86c2ebaaebab
+size 265

@@ -1,25 +1,3 @@
-﻿using Application.Abstractions.Messaging;
-using Application.Abstractions.Repositories;
-using SharedKernel.Primitives;
-
-namespace Application.VideoProcesses.GetById;
-public sealed class GetVideoProcessStatusByIdQueryHandler(IVideoProcessRepository videoProcessRepository) : IQueryHandler<GetVideoProcessStatusByIdQuery, string>
-{
-    public async Task<Result<string>> Handle(GetVideoProcessStatusByIdQuery query, CancellationToken cancellationToken)
-    {
-        var videoProcess =  await videoProcessRepository
-            .GetByIdAsync(query.videoProcessId, cancellationToken);
-
-        if (videoProcess is null)
-        {
-            return Result.Failure<string>(
-                new List<Error> { 
-                    Error.NotFound("NotFound", $"The video process with Id {query.videoProcessId} was not found.") 
-                });
-        }
-
-        var videoStatus = videoProcess.Status.ToString();
-
-        return Result.Success(videoStatus);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:17a337b7fc3d7257040107cf334ecf7216f3d042fe3d85c916485b7061c72dac
+size 964

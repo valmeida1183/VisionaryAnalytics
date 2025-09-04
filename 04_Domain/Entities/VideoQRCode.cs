@@ -1,11 +1,3 @@
-﻿using SharedKernel.Abstractions;
-
-namespace Domain.Entities;
-public class VideoQRCode : Entity
-{
-    public TimeSpan TimeStamp { get; set; }
-    public required string DataContent { get; set; }
-    public Guid VideoProcessId { get; set; }
-
-    public virtual VideoProcess? VideoProcess { get; set; }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:fd166c99afda9266470dd42d66189328fff825f8425b655bb0c04b21e65d1032
+size 305

@@ -1,24 +1,3 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>Infraestructure</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FFMpegCore" Version="5.2.0" />
-    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.19" />
-    <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.3.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
-    <PackageReference Include="ZXing.Net" Version="0.16.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\03_Application\03_Application.csproj" />
-  </ItemGroup>
-
-</Project>
+version https://git-lfs.github.com/spec/v1
+oid sha256:4f9ff83be55419c5591c4d50e64c97d144a494cfea43c883db1afd8d770bbd78
+size 1304

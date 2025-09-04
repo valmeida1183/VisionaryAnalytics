@@ -1,21 +1,3 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>WebApi</RootNamespace>
-    <UserSecretsId>edf2131e-8d09-4944-933b-c5ede2645ae0</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\07_CrossCutting\07_CrossCutting.csproj" />
-  </ItemGroup>
-
-</Project>
+version https://git-lfs.github.com/spec/v1
+oid sha256:a774a1439ef0ce35a34619d4f46afc02b277eff71a22d491eea7baed99dda429
+size 709

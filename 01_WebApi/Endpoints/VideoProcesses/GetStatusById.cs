@@ -1,24 +1,3 @@
-﻿using Application.VideoProcesses.GetById;
-using MediatR;
-using SharedKernel.Primitives;
-using WebApi.Extensions;
-
-namespace WebApi.Endpoints.VideoProcesses;
-
-public static class GetStatusById
-{
-    public static void MapGetStatusByIdVideoProcessEndpoint(this IEndpointRouteBuilder app)
-    {
-        app.MapGet("videos/status/{id:guid}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
-        {
-            var query = new GetVideoProcessStatusByIdQuery(id);
-
-            Result<string> result = await sender.Send(query, cancellationToken);
-
-            return result.Match(Results.Ok, Results.NotFound);
-        })
-        .Produces(StatusCodes.Status200OK)
-        .WithName("VideoProcessStatus")
-        .WithTags(EndpointTags.VideoProcess);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a7006938b249adc48613e1dbb0817a2876afe6954244f0f5749dfe442f75d150
+size 781

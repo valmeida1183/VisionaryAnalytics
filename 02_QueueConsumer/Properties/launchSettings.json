@@ -1,15 +1,3 @@
-{
-  "profiles": {
-    "_02_QueueConsumer": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true
-    },
-    "Container (Dockerfile)": {
-      "commandName": "Docker"
-    }
-  },
-  "$schema": "http://json.schemastore.org/launchsettings.json"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:3840b1cd4f23380302d264725239683590c07c8bfe5183d59315f069f5886573
+size 338

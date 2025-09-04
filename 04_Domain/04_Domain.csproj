@@ -1,14 +1,3 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>Domain</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\06_SharedKernel\06_SharedKernel.csproj" />
-  </ItemGroup>
-
-</Project>
+version https://git-lfs.github.com/spec/v1
+oid sha256:a41432f861f6acf7cfb592d70a85fb5970036a2bf362380331b9d1922e5d7afa
+size 358

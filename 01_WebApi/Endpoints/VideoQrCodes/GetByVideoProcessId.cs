@@ -1,26 +1,3 @@
-﻿using Application.VideoQrCodes.GetByVideoProcessId;
-using Domain.Entities;
-using MediatR;
-using SharedKernel.Primitives;
-using WebApi.Extensions;
-
-namespace WebApi.Endpoints.VideoQrCodes;
-
-public static class GetByVideoProcessId
-{
-    public static void MapGetByVideoProcessIdQRCodesEndpoint(this IEndpointRouteBuilder app)
-    {
-        app.MapGet("qrcodes/{videoProcessId:guid}", async (Guid videoProcessId, ISender sender, CancellationToken cancellationToken) =>
-        {
-            var query = new GetQRCodesByVideoProcessIdQuery(videoProcessId);
-
-            Result<IEnumerable<VideoQRCode>> result = await sender.Send(query, cancellationToken);
-
-            return result.Match(Results.Ok, Results.BadRequest);
-        })
-        .Produces(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status404NotFound)
-        .WithName("VideoQrCodes")
-        .WithTags(EndpointTags.QrCodes);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:dd7ce80e08c9a9774e6fb145be16e9acff12af3cfac97ac6e0e4bb5819958074
+size 908

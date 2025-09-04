@@ -1,12 +1,3 @@
-﻿using Domain.Entities;
-
-namespace Application.Abstractions.Repositories;
-public interface IVideoQrCodeRepository
-{
-    Task<IEnumerable<VideoQRCode>> GetByVideoProcessIdAsync(Guid videoProcessId, CancellationToken cancellationToken);
-    Task<VideoQRCode?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-    Task AddAsync(VideoQRCode videoQRCode);
-    Task AddRangeAsync(IEnumerable<VideoQRCode> videoQRCodes);
-    void Update(VideoQRCode videoQRCode);
-    void Delete(VideoQRCode videoQRCode);
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7aec0592faba1b83384e4df66be7c412314411ef6895ea89b28cbb49e5545e35
+size 513

@@ -1,33 +1,3 @@
-using Infraestructure.QrCodeAnalyzer;
-using Xunit;
-
-namespace IntegrationTest.Infrastructure.QrCodeAnalyzer;
-
-public class ZxingQrCodeAnalyzerServiceTests
-{
-    private readonly ZxingQrCodeAnalyzerService _analyzerService;
-
-    public ZxingQrCodeAnalyzerServiceTests()
-    {
-        // Assuming ZxingQrCodeAnalyzerService has a parameterless constructor
-        // or its dependencies can be resolved by the test project.
-        _analyzerService = new ZxingQrCodeAnalyzerService();
-    }
-
-    [Fact]
-    public void Analyze_ShouldReturnCorrectText_WhenQrCodeIsValid()
-    {
-        // Arrange
-        var expectedText = "Hello World";
-        var assetPath = Path.Combine(AppContext.BaseDirectory, "Assets", "qr-code-test.png");
-
-        // Sanity check to ensure the test asset is copied correctly
-        Assert.True(File.Exists(assetPath), "Test asset 'qr-code-test.png' not found. Ensure its 'Copy to Output Directory' property is set to 'PreserveNewest' or 'Copy always'.");
-
-        // Act
-        //var result = _analyzerService.Analyze(assetPath);
-
-        // Assert
-        //Assert.Equal(expectedText, result);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:87afd9d3a4f42497bcf229cecb69801db804fa043b788acacd982cc526a7193a
+size 2653

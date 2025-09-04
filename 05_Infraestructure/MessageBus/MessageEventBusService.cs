@@ -1,18 +1,3 @@
-﻿using Application.Abstractions.MessageBus;
-using MassTransit;
-
-namespace Infraestructure.MessageBus;
-public class MessageEventBusService : IMessageEventBusService
-{
-    private readonly IBus _bus;
-
-    public MessageEventBusService(IBus bus)
-    {
-        _bus = bus;
-    }
-
-    public async Task PublishAsync<T>(T messageEvent, CancellationToken cancellation = default) where T : class
-    {
-        await _bus.Publish(messageEvent, cancellation);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:8337d0f46039f890eadfe238da1c8910b7a098ad8d8e4a5a3b17f07402ea5c3c
+size 460

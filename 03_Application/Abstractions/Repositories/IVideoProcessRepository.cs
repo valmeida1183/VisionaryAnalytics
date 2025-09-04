@@ -1,11 +1,3 @@
-﻿using Domain.Entities;
-
-namespace Application.Abstractions.Repositories;
-public interface IVideoProcessRepository
-{
-    Task<IEnumerable<VideoProcess>> GetAllAsync(CancellationToken cancellationToken);
-    Task<VideoProcess?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-    Task AddAsync(VideoProcess videoProcess);
-    void Update(VideoProcess videoProcess);
-    void Delete(VideoProcess videoProcess);
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:9f489cc5c4d6a99cb6a05a6490c1f9913d437eee850422b385614e501fbf8986
+size 425
