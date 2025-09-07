@@ -1,3 +1,51 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:18f463d65d183674700103dd647091c8d930b7f46e8b799d5e0eaf728de50513
-size 921
+name: Build and Test
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:	
+    branches:
+    - main
+  workflow_dispatch:
+  
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    name: Build
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
+          
+    - name: Restore .NET dependencies
+      run: dotnet restore
+
+    - name: Build .NET project
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run Unit Tests
+      run: dotnet test --no-build --configuration Release --filter "Category!=Integration"
+
+    - name : Run Integration Tests
+      run: dotnet test --no-build --configuration Release --filter "Category=Integration"
+
+  
+
+
+
+
+
+
+

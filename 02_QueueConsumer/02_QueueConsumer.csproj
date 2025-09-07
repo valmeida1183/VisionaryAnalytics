@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:12ef38c3c1ffed62f44bc31590d152356e01d4c877da720a06890e703fdc1055
-size 991
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-_02_QueueConsumer-9045d60f-ad63-4221-8fb6-02659a48f089</UserSecretsId>
+    <RootNamespace>QueueConsumer</RootNamespace>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\07_CrossCutting\07_CrossCutting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\05_Infraestructure\Assets\FFMpeg\**\*.*">
+      <Link>Assets\FFMpeg\%(RecursiveDir)%(Filename)%(Extension)</Link> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

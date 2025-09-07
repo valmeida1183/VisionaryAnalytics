@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:55b32db45a25327e742d015fed8b70c9688d626157b1d7a3e776a37a8938e44d
-size 524
+# services:
+#   # webapi:
+#   #   environment:
+#   #     - ASPNETCORE_ENVIRONMENT=Development
+#   #     - ASPNETCORE_HTTP_PORTS=8080
+#   #     - ASPNETCORE_HTTPS_PORTS=8081
+#   #   ports:
+#   #     - "8080"
+#   #     - "8081"
+#   #   volumes:
+#   #     - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+#   #     - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+#   #     - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+#   #     - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

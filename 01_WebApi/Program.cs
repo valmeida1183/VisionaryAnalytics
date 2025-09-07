@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c2c1f3d3f181d91b1e3c8f897a21aafc3d0b301e2aa17c15f21c2c42d90b4dd9
-size 644
+using WebApi.Extensions;
+using CrossCutting.DI;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    // Remove the file size limitation for Kestrel
+    options.Limits.MaxRequestBodySize = null; 
+});
+
+builder.Services
+    .AddWebApiConfiguration()
+    .AddApplicationConfiguration()
+    .AddInfraestructureConfiguration(builder.Configuration)
+    .AddDataBaseConfiguration(builder.Configuration)
+    .AddMassTransitProducerConfiguration(builder.Configuration);
+
+var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.AddEndpoints();
+
+app.Run();
+
+public partial class Program { }

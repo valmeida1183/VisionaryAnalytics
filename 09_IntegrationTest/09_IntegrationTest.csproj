@@ -1,3 +1,66 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d832348556e6eb4572910865ed08890d34c4988b34fd80e3753548ad5492c1aa
-size 2316
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>IntegrationTest</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.4" />
+    <PackageReference Include="MassTransit.TestFramework" Version="8.2.2" />
+    <PackageReference Include="EphemeralMongo" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\VideoAnalyzer\" />
+    <Folder Include="Infrastructure\QrCodeAnalyzer\" />
+    <Folder Include="Assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\07_CrossCutting\07_CrossCutting.csproj" />
+    <ProjectReference Include="..\01_WebApi\01_WebApi.csproj" />
+    <ProjectReference Include="..\02_QueueConsumer\02_QueueConsumer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\qr-code-test.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\no-qr-code-test.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\video-test.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="..\05_Infraestructure\Assets\FFMpeg\**\*.*">
+      <Link>Assets\FFMpeg\%(RecursiveDir)%(Filename)%(Extension)</Link> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="WebApi\**" />
+    <EmbeddedResource Remove="WebApi\**" />
+    <None Remove="WebApi\**" />
+  </ItemGroup>
+
+</Project>

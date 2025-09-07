@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ecd82d7c487f386833c441322b1675a3e95a5fdcf8654bd280879dad8bf12df8
-size 700
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
+using Domain.Entities;
+using SharedKernel.Primitives;
+
+namespace Application.VideoQrCodes.GetByVideoProcessId;
+public sealed class GetQRCodesByVideoProcessIdQueryHandler(IVideoQrCodeRepository videoQrCodeRepository) 
+    : IQueryHandler<GetQRCodesByVideoProcessIdQuery, IEnumerable<VideoQRCode>>
+{
+    public async Task<Result<IEnumerable<VideoQRCode>>> Handle(GetQRCodesByVideoProcessIdQuery query, CancellationToken cancellationToken)
+    {
+        var qrCodes =  await videoQrCodeRepository.GetByVideoProcessIdAsync(query.VideoProcessId, cancellationToken);
+
+        return Result.Success(qrCodes);
+    }
+}

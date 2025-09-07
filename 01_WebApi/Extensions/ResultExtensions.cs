@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:21d3455ddcb90638d248cb2dd4f5f61d8ce2693852fe45d69f6c9a74fee8846d
-size 626
+﻿using SharedKernel.Primitives;
+
+namespace WebApi.Extensions;
+
+public static class ResultExtensions
+{
+    public static TOut Match<TOut>(
+        this Result result,
+        Func<TOut> onSuccess,
+        Func<Result, TOut> onFailure)
+    {
+        return result.IsSuccess
+            ? onSuccess()
+            : onFailure(result);
+    }
+
+    public static TOut Match<TValue, TOut>(
+        this Result<TValue> result,
+        Func<Result<TValue>, TOut> onSuccess,
+        Func<Result<TValue>, TOut> onFailure)
+    {
+        return result.IsSuccess
+            ? onSuccess(result)
+            : onFailure(result);
+    }   
+}

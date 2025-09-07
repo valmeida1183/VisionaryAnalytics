@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:31e9fec6506a7417f5991d9eed21b3b27594f047ca277cfd77798fb4ae6b004d
-size 899
+
+using MassTransit.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
+
+namespace IntegrationTest;
+
+public abstract class BaseIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>>
+{
+    protected readonly HttpClient _client;
+    protected readonly ITestHarness _harness;
+
+    protected readonly IServiceProvider _services;
+
+    protected BaseIntegrationTest(CustomWebApplicationFactory<Program> factory)
+    {
+        _client = factory.CreateClient();
+        _harness = factory.Services.GetRequiredService<ITestHarness>();
+        _services = factory.Services;
+    }
+
+    protected async Task<JsonElement> ParseResponse(HttpResponseMessage responseMessage)
+    {   
+        var jsonResponse = await responseMessage.Content.ReadAsStringAsync();
+        var jsonDoc = JsonDocument.Parse(jsonResponse);
+        
+        return jsonDoc.RootElement;
+    }
+}

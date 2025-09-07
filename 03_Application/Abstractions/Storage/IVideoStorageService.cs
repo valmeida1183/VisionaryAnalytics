@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6cfc1d06e26b399dd8b5a7e64096cd726d354ed5f2d833d5b429bf6176d29993
-size 472
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Application.Abstractions.Storage;
+public interface IVideoStorageService
+{
+    Task CreateVideoFileAsync(IFormFile file,
+                              Guid fileId,
+                              string fileName,
+                              CancellationToken cancellationToken);
+    string GetVideoFilePath(Guid fileId, string fileName);
+    string GetVideoFolderPath(Guid fileId);
+
+    void DeleteVideoFolder(Guid fileId);
+}

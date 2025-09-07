@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bb55d1864e6288e3b4ebd1703521be6906ad2f324617e05c75461d311b35613e
-size 480
+using CrossCutting.DI;
+using QueueConsumer;
+
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+builder.Services.AddHostedService<Worker>();
+
+builder.Services
+    .AddApplicationConfiguration()
+    .AddInfraestructureConfiguration(builder.Configuration)
+    .AddDataBaseConfiguration(builder.Configuration)
+    .AddMassTransitConsumerConfiguration(builder.Configuration);
+
+
+var host = builder.Build();
+host.Run();

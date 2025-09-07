@@ -1,3 +1,60 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f4463d79f213ccd66376d461c1c5aa702a415f111ddcb5f36671f782f944356a
-size 1791
+using EphemeralMongo;
+using Infraestructure.Database;
+using MassTransit;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace IntegrationTest;
+
+public class CustomWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class
+{
+    private readonly IMongoRunner _mongoRunner;
+
+    public CustomWebApplicationFactory()
+    {
+        _mongoRunner = MongoRunner.Run(new MongoRunnerOptions
+        {
+            UseSingleNodeReplicaSet = true // Recommended for transactions
+        });
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureServices(services =>
+        {
+            var dbContextOptions = services.SingleOrDefault(
+                d => d.ServiceType ==
+                    typeof(DbContextOptions<AppDbContext>));
+
+            if (dbContextOptions != null)
+            {
+                services.Remove(dbContextOptions);
+            }
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseMongoDB(_mongoRunner.ConnectionString, "test");
+            });
+
+            // Replace MassTransit with in-memory test harness
+            var massTransitDescriptors = services
+                .Where(d => d.ServiceType.Namespace?.StartsWith("MassTransit") == true)
+                .ToList();
+
+            foreach (var descriptor in massTransitDescriptors)
+            {
+                services.Remove(descriptor);
+            }
+
+            services.AddMassTransitTestHarness();
+        });
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();
+        _mongoRunner.Dispose();
+    }
+}

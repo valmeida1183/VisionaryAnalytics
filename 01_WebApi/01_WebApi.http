@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cd8d8e36f3d26ed2b2b4d89844698ec2b407648a4669dc746646e8de616ab831
-size 127
+@_01_WebApi_HostAddress = http://localhost:5027
+
+GET {{_01_WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,3 +1,101 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a662a21862a6a17413b3837ed794cfd75820e2ae1db5f8200d18314d0644a4ab
-size 3150
+version: '3.8'
+
+services:
+  webapi:
+    image: vinicius1183/visionary-analyticts-webapi:v1.0.0
+    container_name: visionary-analytics-webapi
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - video-storage:${ROOT_STORAGE_PATH}
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Production   
+      - ConnectionStrings__DefaultConnection=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/
+      - RabbitMq__Host=${RABBITMQ_HOST}
+      - RabbitMq__User=${RABBITMQ_USER}
+      - RabbitMq__Password=${RABBITMQ_PASSWORD}
+      - FileStorageSettings__Root=${ROOT_STORAGE_PATH}
+      - FileStorageSettings__AppFolderName=${APP_FOLDER_NAME}
+      - FileStorageSettings__VideoFolderName=${VIDEO_FOLDER_NAME}
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  queueconsumer:
+    image: vinicius1183/visionary-analyticts-consumer-worker:v1.0.1
+    container_name: visionary-analytics-consumer
+    restart: unless-stopped
+    volumes:
+      - video-storage:${ROOT_STORAGE_PATH}
+    environment:
+      - ConnectionStrings__DefaultConnection=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/
+      - RabbitMq__Host=${RABBITMQ_HOST}
+      - RabbitMq__User=${RABBITMQ_USER}
+      - RabbitMq__Password=${RABBITMQ_PASSWORD}
+      - FileStorageSettings__Root=${ROOT_STORAGE_PATH}
+      - FileStorageSettings__AppFolderName=${APP_FOLDER_NAME}
+      - FileStorageSettings__VideoFolderName=${VIDEO_FOLDER_NAME}
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  mongodb:
+    image: mongo:latest
+    container_name: visionary-analytics-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASSWORD}
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: visionary-analytics-mongo-express
+    restart: always
+    ports:
+      - "8082:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_DB_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_DB_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    depends_on:
+      - mongodb
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: visionary-analytics-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  video-storage:
+  mongodb_data:
+  rabbitmq-data:
