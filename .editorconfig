@@ -1,0 +1,14 @@
+root = true
+
+# All files
+[*]
+indent_style = space
+
+# Xml files
+[*.xml]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+tab_size = 4
+
