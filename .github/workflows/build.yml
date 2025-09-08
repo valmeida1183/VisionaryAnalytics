@@ -32,14 +32,14 @@ jobs:
     - name: Restore .NET dependencies
       run: dotnet restore VisionaryAnalytics.sln
 
+    - name: Set execute permission for ffmpeg and ffprobe
+      run: chmod +x 05_Infraestructure/Assets/FFMpeg/linux-x64/*
+
     - name: Build .NET project
       run: dotnet build VisionaryAnalytics.sln --no-restore --configuration Release
 
     - name: Run Unit Tests
       run: dotnet test VisionaryAnalytics.sln --no-build --configuration Release --filter "Category!=Integration"
-
-    - name: Set execute permission for ffmpeg and ffprobe
-      run: chmod +x 05_Infraestructure/Assets/FFMpeg/linux-x64/*
 
     - name : Run Integration Tests
       run: dotnet test VisionaryAnalytics.sln --no-build --configuration Release --filter "Category=Integration"
