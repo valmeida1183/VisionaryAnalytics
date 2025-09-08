@@ -30,16 +30,16 @@ jobs:
         dotnet-version: '8.x'
           
     - name: Restore .NET dependencies
-      run: dotnet restore
+      run: dotnet restore VisionaryAnalytics.sln
 
     - name: Build .NET project
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build VisionaryAnalytics.sln --no-restore --configuration Release
 
     - name: Run Unit Tests
-      run: dotnet test --no-build --configuration Release --filter "Category!=Integration"
+      run: dotnet test VisionaryAnalytics.sln --no-build --configuration Release --filter "Category!=Integration"
 
     - name : Run Integration Tests
-      run: dotnet test --no-build --configuration Release --filter "Category=Integration"
+      run: dotnet test VisionaryAnalytics.sln --no-build --configuration Release --filter "Category=Integration"
 
   
 
