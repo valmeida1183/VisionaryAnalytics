@@ -38,6 +38,9 @@ jobs:
     - name: Run Unit Tests
       run: dotnet test VisionaryAnalytics.sln --no-build --configuration Release --filter "Category!=Integration"
 
+    - name: Set execute permission for ffmpeg and ffprobe
+      run: chmod +x 05_Infraestructure/Assets/FFMpeg/linux-x64/*
+
     - name : Run Integration Tests
       run: dotnet test VisionaryAnalytics.sln --no-build --configuration Release --filter "Category=Integration"
 
